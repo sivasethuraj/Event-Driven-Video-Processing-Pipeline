@@ -1,7 +1,6 @@
 # **Event-Driven Video Processing Pipeline**
-![Architecture Diagram](https://res.cloudinary.com/db3ogkhvu/image/upload/v1771563142/image_2_rf4fyp.png)
 
-![Architecture Diagram]("./images/Architecture-Diagram.png")
+![Architecture Diagram](images/Architecture-Diagram.png)
 
 In this project, an event-driven, scalable video processing and streaming platform using AWS.
 
@@ -71,7 +70,8 @@ Navigate to  **DynamoDB**  ->  **Tables**  ->  **Create table**.
 **Step 2: Save and Verify**
 
 -   Leave all other settings as default and click  **Create table**.
--   Wait a few moments until the table's status changes from "Creating" to "Active".  
+-   Wait a few moments until the table's status changes from "Creating" to "Active".
+![VideoCatalog](images/Screenshot-(66).png)
 
 ## TASK 4: CREATE BUFFER (SQS)
 
@@ -109,7 +109,7 @@ Scroll down to  **Access policy**  and choose  **Advanced**.
 ```
 
 -   Click  **Create queue**. Copy your  **Queue URL**  from the details page, you will need it for your Python code!
-
+![VideoCatalog](images/Screenshot-(67).png)
 **Step 3: Link S3 to SQS**
 
 1.  Go to  **S3**  -> Click your  **Input Bucket**  ->  **Properties**  tab.
@@ -118,7 +118,9 @@ Scroll down to  **Access policy**  and choose  **Advanced**.
 4.  **Event types:**  Check the box for  **All object create events**.
 5.  **Destination:**  Select  **SQS Queue**  -> Choose  `VideoQueue`.
 6.  Click  **Save changes**.
-
+> ![VideoCatalog](images/Screenshot-(68).png)
+> ![VideoCatalog](images/Screenshot-(69).png)
+> ![VideoCatalog](images/Screenshot-(70).png)
 ## TASK 5: COMPUTE INFRASTRUCTURE ( EC2 )
 
   
@@ -151,7 +153,7 @@ Click  **Launch instances**  again to create your second server.
     -   **Type:**  HTTP |  **Source type:**  Anywhere
 -   **Advanced Details:**  Scroll down to  **IAM instance profile**  and select the  `iam_role_video_lab`  IAM instance profile.
 -   Click  **Launch instance**.
-
+![VideoCatalog](images/Screenshot-(71).png)
 ## TASK 6: DEPLOY THE WORKER
 
 **Goal:**  Install FFmpeg (the industry standard video processor) and deploy the Python script that listens to SQS and converts our videos.
@@ -185,7 +187,7 @@ nano worker.py
 Paste the Python code below.
 
 -   **CRITICAL:**  You must update the  `INPUT_BUCKET`,  `OUTPUT_BUCKET`, and  `QUEUE_URL`  variables at the top of the script with your exact values!
-
+![VideoCatalog](images/Screenshot-(73).png)
 ```python
 import boto3, json, os, subprocess, re
 from urllib.parse import unquote_plus
@@ -261,7 +263,7 @@ Run the script. It will print "Worker started. Listening…" and hang there wait
 ```bash
 python3.11 worker.py
 ```
-
+![VideoCatalog](images/Screenshot-(72).png)
 ## TASK 7: DEPLOY FRONTEND SERVER
 
 **Goal:**  Set up the Flask web server to serve the UI, handle direct S3 file uploads, and stream the finalized HLS video chunks.
@@ -500,7 +502,7 @@ Run the Flask server. We use sudo because the script needs permission to open po
 ```bash
 sudo python3.11 server.py
 ```
-
+![VideoCatalog](images/Screenshot-(74).png)
 ## TASK 8: APPLICATION VALIDATION
 
 **Time to test the pipeline!**
@@ -510,19 +512,25 @@ sudo python3.11 server.py
 1.  Go back to your EC2 console and locate your  **Web-Server**  instance.
 2.  Copy its  **Public IPv4 address**.
 3.  Paste the IP address into a new tab in your web browser. You should see the interface!
-
+![VideoCatalog](images/Screenshot-(75).png)
 **Step 2: Upload a Video**
 
 1.  Click the  **+ UPLOAD VIDEO**  button.
 2.  Select a short  `.mp4`  video from your computer (using a small file is recommended so you don't have to wait too long!).
 3.  The Web-Server will upload the file to your Input S3 bucket and log it as "Queued".
-
+![VideoCatalog](images/Screenshot-(76).png)
 **Step 3: Watch the Worker**  
 If you switch back to the browser tab where your  **Worker-Server**  terminal is running, you will see it instantly pick up the job and start printing the conversion progress percentage!
-
+![VideoCatalog](images/Screenshot-(74).png)
 **Step 4: Play**  
 Once the worker hits 100%, the UI will update the status to "Ready". Click the video card to stream your fully processed, chunked HLS video directly from your Output S3 bucket.
-
+![VideoCatalog](images/Screenshot-(77).png)
+![VideoCatalog](images/Screenshot-(78).png)
+![VideoCatalog](images/Screenshot-(79).png)
+![VideoCatalog](images/Screenshot-(80).png)
+![VideoCatalog](images/Screenshot-(81).png)
+![VideoCatalog](images/Screenshot-(82).png)
+![VideoCatalog](images/Screenshot-(83).png)
 ------------
 ---------------
 
