@@ -1,7 +1,7 @@
 # **Event-Driven Video Processing Pipeline**
 ![Architecture Diagram](https://res.cloudinary.com/db3ogkhvu/image/upload/v1771563142/image_2_rf4fyp.png)
 
-![Architecture Diagram]("./images/Architecture-Diagram")
+![Architecture Diagram]("./images/Architecture-Diagram.png")
 
 In this project, an event-driven, scalable video processing and streaming platform using AWS.
 
